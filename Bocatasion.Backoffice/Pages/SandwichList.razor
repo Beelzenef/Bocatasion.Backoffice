@@ -1,0 +1,72 @@
+@page "/sandwichlist"
+@using Models.Food
+
+<h1>Sandwich menu</h1>
+
+<p>Where bocatas belong</p>
+
+@if (sandwiches == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Disabled</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sandwich in sandwiches)
+            {
+                <tr>
+                    <td>
+                        <img src="@sandwich.ImageUrl"
+                             alt="@sandwich.Description"
+                             width="80" />
+                    </td>
+                    <td>
+                        @sandwich.Name
+                    </td>
+                    <td>
+                        @sandwich.Description
+                    </td>
+                    <td>
+                        @sandwich.Price €
+                    </td>
+                    <td>
+                        @sandwich.Disabled
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<SandwichModel> sandwiches = new List<SandwichModel>
+{
+        new SandwichModel
+        {
+            Name = "Sandwich mixto",
+            Description = "Delicious sandwich de jamón y queso fundido",
+            Disabled = false,
+            Price = 3.50,
+            ImageUrl = "https://i-ticketing.iwos.com/256x256-th/products/213/products_213_27.jpg"
+        },
+        new SandwichModel
+        {
+            Name = "Hot dog",
+            Description = "Pan de perrito con salchica, a elegir con ketchup, mayonesa y/o mostaza",
+            Disabled = false,
+            Price = 4,
+            ImageUrl = "https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/hot-dog.png"
+        }
+    };
+}
