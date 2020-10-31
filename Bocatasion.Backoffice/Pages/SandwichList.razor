@@ -1,4 +1,4 @@
-@page "/sandwichlist"
+ï»¿@page "/sandwichlist"
 @using Models.Food
 
 <h1>Sandwich menu</h1>
@@ -19,7 +19,7 @@ else
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
-                <th>Disabled</th>
+                <th>Available</th>
             </tr>
         </thead>
         <tbody>
@@ -31,17 +31,24 @@ else
                              alt="@sandwich.Description"
                              width="80" />
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @sandwich.Name
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @sandwich.Description
                     </td>
-                    <td>
-                        @sandwich.Price €
+                    <td class="align-middle text-center">
+                        @sandwich.Price ðŸ’°
                     </td>
-                    <td>
-                        @sandwich.Disabled
+                    <td class="align-middle text-center">
+                        @if (@sandwich.Disabled)
+                        {
+                            <span class="oi oi-circle-x mr-2" aria-hidden="true"></span>
+                        }
+                        else
+                        {
+                            <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
+                        }
                     </td>
                 </tr>
             }
@@ -55,8 +62,8 @@ else
         new SandwichModel
         {
             Name = "Sandwich mixto",
-            Description = "Delicious sandwich de jamón y queso fundido",
-            Disabled = false,
+            Description = "Delicious sandwich de jamÃ³n y queso fundido",
+            Disabled = true,
             Price = 3.50,
             ImageUrl = "https://i-ticketing.iwos.com/256x256-th/products/213/products_213_27.jpg"
         },
