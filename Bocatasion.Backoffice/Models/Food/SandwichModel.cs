@@ -1,4 +1,4 @@
-﻿namespace Models.Food
+﻿namespace Bocatasion.Backoffice.Models.Food
 {
     public class SandwichModel
     {
