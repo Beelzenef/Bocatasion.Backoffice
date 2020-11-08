@@ -10,7 +10,9 @@ namespace Bocatasion.Backoffice.Services.Food
 {
     public class FoodService : IFoodService
     {
-        HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
+
+        private readonly string ControllerName = "/SandwichManagement/";
 
         public FoodService(HttpClient http)
         {
@@ -21,7 +23,7 @@ namespace Bocatasion.Backoffice.Services.Food
         {
             var result = new List<SandwichModel>();
             
-            var response = await _httpClient.GetAsync("/SandwichManagement");
+            var response = await _httpClient.GetAsync(ControllerName + "GetAllSandwiches");
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -40,9 +42,17 @@ namespace Bocatasion.Backoffice.Services.Food
             throw new NotImplementedException();
         }
 
-        public Task<SandwichModel> GetSandwich(int id)
+        public async Task<SandwichModel> GetSandwich(int id)
         {
-            throw new NotImplementedException();
+            var result = new SandwichModel();
+
+            var response = await _httpClient.GetAsync(ControllerName + $"GetSandwichById/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<SandwichModel>(responseContent);
+            }
+            return result;
         }
 
         public Task<bool> UpdateSandwich(SandwichModel model)

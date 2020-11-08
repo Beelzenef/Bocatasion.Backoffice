@@ -1,7 +1,9 @@
 ﻿@page "/sandwichlist"
 @using Bocatasion.Backoffice.Interfaces
 @using Bocatasion.Backoffice.Models.Food
-@inject IFoodService foodService 
+
+@inject IFoodService foodService
+@inject NavigationManager NavManager
 
 <h1>Sandwich menu</h1>
 
@@ -22,6 +24,7 @@ else
                 <th>Description</th>
                 <th>Price</th>
                 <th>Available</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -52,12 +55,15 @@ else
                             <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
                         }
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-warning" @onclick="(() => EditSandwich(sandwich.Id))" >Edit</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 
-    
+
 }
 
 @code {
@@ -68,5 +74,10 @@ else
     {
         await base.OnInitializedAsync();
         sandwiches = await foodService.GetAllSandwiches();
+    }
+
+    private void EditSandwich(int id)
+    {
+        NavManager.NavigateTo($"sandwichedit/{id}");
     }
 }
