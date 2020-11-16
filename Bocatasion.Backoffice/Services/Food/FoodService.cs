@@ -37,9 +37,14 @@ namespace Bocatasion.Backoffice.Services.Food
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteSandwich(int id)
+        public async Task<bool> DeleteSandwich(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync(ControllerName + $"DeleteSandwich/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<SandwichModel> GetSandwich(int id)
