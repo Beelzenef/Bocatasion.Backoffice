@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Bocatasion.Backoffice.Services.Food
@@ -32,9 +33,17 @@ namespace Bocatasion.Backoffice.Services.Food
             return result;
         }
 
-        public Task<SandwichModel> CreateSandwich(SandwichModel model)
+        public async Task<SandwichModel> CreateSandwich(SandwichCreatableDto model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(ControllerName + "CreateSandwich", model);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+            }
+            return null;
         }
 
         public async Task<bool> DeleteSandwich(int id)

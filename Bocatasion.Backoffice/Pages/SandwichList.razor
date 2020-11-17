@@ -9,6 +9,10 @@
 
 <p>Where bocatas belong</p>
 
+<button class="btn btn-info" @onclick="AddSandwich">Add</button>
+
+<br />
+
 @if (sandwiches == null)
 {
     <p><em>Loading...</em></p>
@@ -43,7 +47,7 @@ else
                         @sandwich.Description
                     </td>
                     <td class="align-middle text-center">
-                        @sandwich.Price 
+                        @sandwich.Price
                     </td>
                     <td class="align-middle text-center">
                         @if (@sandwich.Disabled)
@@ -56,7 +60,7 @@ else
                         }
                     </td>
                     <td class="align-middle text-center">
-                        <button type="button" class="btn btn-warning" @onclick="(() => EditSandwich(sandwich.Id))" >Edit</button>
+                        <button type="button" class="btn btn-warning" @onclick="(() => EditSandwich(sandwich.Id))">Edit</button>
                     </td>
                     <td class="align-middle text-center">
                         <button type="button" class="btn btn-danger" @onclick="(() => DeleteSandwich(sandwich.Id))">
@@ -79,6 +83,11 @@ else
     {
         await base.OnInitializedAsync();
         sandwiches = await foodService.GetAllSandwiches();
+    }
+
+    private void AddSandwich()
+    {
+        NavManager.NavigateTo($"sandwichadd");
     }
 
     private void EditSandwich(int id)
