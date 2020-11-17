@@ -1,0 +1,107 @@
+﻿@page "/sandwichdelete"
+@page "/sandwichdelete/{id}"
+@using Bocatasion.Backoffice.Interfaces
+@using Bocatasion.Backoffice.Models.Food
+
+@inject IFoodService foodService
+@inject NavigationManager NavManager
+
+<h1>Edit sandwich</h1>
+
+@if (@sandwich == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <img src="@sandwich.ImageUrl" alt="@sandwich.Description" width="80" />
+                </td>
+                <td class="align-middle">
+                    @sandwich.Name
+                </td>
+                <td class="align-middle">
+                    @sandwich.Description
+                </td>
+                <td class="align-middle text-center">
+                    @sandwich.Price 💰
+                </td>
+                <td class="align-middle text-center">
+                    @if (@sandwich.Disabled)
+                    {
+                        <span class="oi oi-circle-x mr-2" aria-hidden="true"></span>
+                    }
+                    else
+                    {
+                        <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@if (@hideNotification == false)
+{
+    <div class="alert alert-danger" role="alert">
+        Something went wrong...
+    </div>
+}
+
+<div class="alert alert-warning" role="alert">
+    <table>
+        <tr>
+            <td>
+                <button type="button" class="btn btn-danger" @onclick="ConfirmDeletion">Confirm</button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-info" @onclick="BackToMenu">Cancel</button>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private int sandwichId = 0;
+    private bool hideNotification = true;
+
+    SandwichModel sandwich;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sandwichId = int.Parse(Id);
+
+        await base.OnInitializedAsync();
+        sandwich = await foodService.GetSandwich(sandwichId);
+    }
+
+    private async Task ConfirmDeletion()
+    {
+        hideNotification = await foodService.DeleteSandwich(sandwichId);
+        if (hideNotification)
+        {
+            NavManager.NavigateTo("sandwichlist");
+        }
+    }
+
+    private void BackToMenu()
+    {
+        NavManager.NavigateTo("sandwichlist");
+    }
+}

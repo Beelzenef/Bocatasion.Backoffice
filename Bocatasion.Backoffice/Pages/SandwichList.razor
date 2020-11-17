@@ -22,7 +22,7 @@ else
                 <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
+                <th>💰</th>
                 <th>Available</th>
                 <th></th>
             </tr>
@@ -43,7 +43,7 @@ else
                         @sandwich.Description
                     </td>
                     <td class="align-middle text-center">
-                        @sandwich.Price 💰
+                        @sandwich.Price 
                     </td>
                     <td class="align-middle text-center">
                         @if (@sandwich.Disabled)
@@ -55,8 +55,13 @@ else
                             <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
                         }
                     </td>
-                    <td>
+                    <td class="align-middle text-center">
                         <button type="button" class="btn btn-warning" @onclick="(() => EditSandwich(sandwich.Id))" >Edit</button>
+                    </td>
+                    <td class="align-middle text-center">
+                        <button type="button" class="btn btn-danger" @onclick="(() => DeleteSandwich(sandwich.Id))">
+                            <span class="oi oi-trash" aria-hidden="true"></span>
+                        </button>
                     </td>
                 </tr>
             }
@@ -79,5 +84,10 @@ else
     private void EditSandwich(int id)
     {
         NavManager.NavigateTo($"sandwichedit/{id}");
+    }
+
+    private void DeleteSandwich(int id)
+    {
+        NavManager.NavigateTo($"sandwichdelete/{id}");
     }
 }
