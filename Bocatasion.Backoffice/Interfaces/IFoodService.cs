@@ -9,7 +9,7 @@ namespace Bocatasion.Backoffice.Interfaces
         Task<List<SandwichModel>> GetAllSandwiches();
         Task<SandwichModel> GetSandwich(int id);
         Task<bool> DeleteSandwich(int id);
-        Task<SandwichModel> CreateSandwich(SandwichModel model);
+        Task<SandwichModel> CreateSandwich(SandwichCreatableDto model);
         Task<bool> UpdateSandwich(SandwichModel model);
     }
 }
