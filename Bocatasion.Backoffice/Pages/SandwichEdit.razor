@@ -14,52 +14,47 @@
 }
 else
 {
-    <table class="table table-hover">
+    <form>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Title</label>
+                <input type="text" @bind="@sandwich.Name" class="form-control" placeholder="Sandwich name">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Price</label>
+                <input type="number" class="form-control" @bind="@sandwich.Price" placeholder="Price">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" @bind="@sandwich.Description"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" @bind="@sandwich.Disabled" type="checkbox" id="enabledCheck">
+                <label class="form-check-label" for="enabledCheck">
+                    Is enabled?
+                </label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Image URL</label>
+                <input type="url" @bind="@sandwich.ImageUrl" class="form-control" placeholder="Image URL">
+            </div>
+            <div class="form-group col-md-6">
+                <img src="@sandwich.ImageUrl" alt="@sandwich.Description" width="80" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" @onclick="EditSandwich">Update</button>
+    </form>
 
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Available</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <img src="@sandwich.ImageUrl"
-                         alt="@sandwich.Description"
-                         width="80" />
-                </td>
-                <td class="align-middle">
-                    @sandwich.Name
-                </td>
-                <td class="align-middle">
-                    @sandwich.Description
-                </td>
-                <td class="align-middle text-center">
-                    @sandwich.Price 💰
-                </td>
-                <td class="align-middle text-center">
-                    @if (@sandwich.Disabled)
-                    {
-                        <span class="oi oi-circle-x mr-2" aria-hidden="true"></span>
-                    }
-                    else
-                    {
-                        <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
-                    }
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <br />
 }
 
 <button type="button" class="btn btn-danger" @onclick="BackToMenu">Cancel</button>
 
 @code {
-
     [Parameter]
     public string Id { get; set; }
 
@@ -71,6 +66,17 @@ else
 
         await base.OnInitializedAsync();
         sandwich = await foodService.GetSandwich(id);
+    }
+
+    private async void EditSandwich()
+    {
+        var result = await foodService.UpdateSandwich(sandwich);
+
+        if (result)
+        {
+            int id = int.Parse(Id);
+            sandwich = await foodService.GetSandwich(id);
+        }
     }
 
     private void BackToMenu()
