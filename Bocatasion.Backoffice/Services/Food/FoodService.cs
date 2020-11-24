@@ -69,9 +69,18 @@ namespace Bocatasion.Backoffice.Services.Food
             return result;
         }
 
-        public Task<bool> UpdateSandwich(SandwichModel model)
+        public async Task<bool> UpdateSandwich(SandwichModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync(ControllerName + "UpdateSandwich", model);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+            }
+            return false;
         }
     }
 }
