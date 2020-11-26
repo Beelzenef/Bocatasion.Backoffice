@@ -1,12 +1,10 @@
+using Bocatasion.Backoffice.Interfaces;
+using Bocatasion.Backoffice.Services.Food;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Bocatasion.Backoffice
 {
@@ -17,7 +15,11 @@ namespace Bocatasion.Backoffice
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            var http = new HttpClient { BaseAddress = new Uri("https://localhost:44374"), };
+            http.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+
+            builder.Services.AddScoped(sp => http);
+            builder.Services.AddTransient<IFoodService, FoodService>();
 
             await builder.Build().RunAsync();
         }

@@ -1,0 +1,67 @@
+﻿@page "/sandwichadd"
+@using Bocatasion.Backoffice.Interfaces
+@using Bocatasion.Backoffice.Models.Food
+
+@inject IFoodService foodService
+@inject NavigationManager NavManager
+
+<h1>Add a new sandwich</h1>
+
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Title</label>
+            <input type="text" @bind="@sandwich.Name" class="form-control" placeholder="Sandwich name">
+        </div>
+        <div class="form-group col-md-6">
+            <label>Price</label>
+            <input type="number" class="form-control" @bind="@sandwich.Price" placeholder="Price">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" rows="3" @bind="@sandwich.Description"></textarea>
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" @bind="@sandwich.Disabled" type="checkbox" id="enabledCheck">
+            <label class="form-check-label" for="enabledCheck">
+                Is enabled?
+            </label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Image URL</label>
+            <input type="url" @bind="@sandwich.ImageUrl" class="form-control" placeholder="Image URL">
+        </div>
+        <div class="form-group col-md-6">
+            <img src="@sandwich.ImageUrl"
+                 alt="@sandwich.Description"
+                 width="80" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" @onclick="AddNewSandwich">Add</button>
+</form>
+
+<br />
+
+<button type="button" class="btn btn-danger" @onclick="BackToMenu">Cancel</button>
+
+
+@code {
+
+    SandwichCreatableDto sandwich = new SandwichCreatableDto();
+
+    private async void AddNewSandwich()
+    {
+        var result = await foodService.CreateSandwich(sandwich);
+
+        BackToMenu();
+    }
+
+    private void BackToMenu()
+    {
+        NavManager.NavigateTo("sandwichlist");
+    }
+}

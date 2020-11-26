@@ -1,8 +1,7 @@
 ﻿namespace Bocatasion.Backoffice.Models.Food
 {
-    public class SandwichModel
+    public class SandwichCreatableDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }

@@ -1,9 +1,17 @@
 ﻿@page "/sandwichlist"
-@using Models.Food
+@using Bocatasion.Backoffice.Interfaces
+@using Bocatasion.Backoffice.Models.Food
+
+@inject IFoodService foodService
+@inject NavigationManager NavManager
 
 <h1>Sandwich menu</h1>
 
 <p>Where bocatas belong</p>
+
+<button class="btn btn-info" @onclick="AddSandwich">Add</button>
+
+<br />
 
 @if (sandwiches == null)
 {
@@ -18,8 +26,9 @@ else
                 <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
+                <th>💰</th>
                 <th>Available</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +47,7 @@ else
                         @sandwich.Description
                     </td>
                     <td class="align-middle text-center">
-                        @sandwich.Price 💰
+                        @sandwich.Price
                     </td>
                     <td class="align-middle text-center">
                         @if (@sandwich.Disabled)
@@ -50,30 +59,44 @@ else
                             <span class="oi oi-circle-check mr-2" aria-hidden="true"></span>
                         }
                     </td>
+                    <td class="align-middle text-center">
+                        <button type="button" class="btn btn-warning" @onclick="(() => EditSandwich(sandwich.Id))">Edit</button>
+                    </td>
+                    <td class="align-middle text-center">
+                        <button type="button" class="btn btn-danger" @onclick="(() => DeleteSandwich(sandwich.Id))">
+                            <span class="oi oi-trash" aria-hidden="true"></span>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
+
+
 }
 
 @code {
-    List<SandwichModel> sandwiches = new List<SandwichModel>
-{
-        new SandwichModel
-        {
-            Name = "Sandwich mixto",
-            Description = "Delicious sandwich de jamón y queso fundido",
-            Disabled = true,
-            Price = 3.50,
-            ImageUrl = "https://i-ticketing.iwos.com/256x256-th/products/213/products_213_27.jpg"
-        },
-        new SandwichModel
-        {
-            Name = "Hot dog",
-            Description = "Pan de perrito con salchica, a elegir con ketchup, mayonesa y/o mostaza",
-            Disabled = false,
-            Price = 4,
-            ImageUrl = "https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/hot-dog.png"
-        }
-    };
+
+    List<SandwichModel> sandwiches;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        sandwiches = await foodService.GetAllSandwiches();
+    }
+
+    private void AddSandwich()
+    {
+        NavManager.NavigateTo($"sandwichadd");
+    }
+
+    private void EditSandwich(int id)
+    {
+        NavManager.NavigateTo($"sandwichedit/{id}");
+    }
+
+    private void DeleteSandwich(int id)
+    {
+        NavManager.NavigateTo($"sandwichdelete/{id}");
+    }
 }
