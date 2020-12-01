@@ -13,7 +13,7 @@ namespace Bocatasion.Backoffice
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
+            builder.RootComponents.Add<App>("#app");
 
             var http = new HttpClient { BaseAddress = new Uri("https://localhost:44374"), };
             http.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");

@@ -1,10 +1,12 @@
 ﻿using Bocatasion.Backoffice.Interfaces;
 using Bocatasion.Backoffice.Models.Food;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Bocatasion.Backoffice.Services.Food
@@ -12,23 +14,31 @@ namespace Bocatasion.Backoffice.Services.Food
     public class FoodService : IFoodService
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions options;
 
         private readonly string ControllerName = "/SandwichManagement/";
 
         public FoodService(HttpClient http)
         {
             _httpClient = http ?? throw new ArgumentNullException(nameof(http));
+
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<SandwichModel>> GetAllSandwiches()
         {
             var result = new List<SandwichModel>();
-            
+
             var response = await _httpClient.GetAsync(ControllerName + "GetAllSandwiches");
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<List<SandwichModel>>(responseContent);
+                Stream contentStream = await response.Content.ReadAsStreamAsync();
+                StreamReader readStream = new StreamReader(contentStream, Encoding.UTF8);
+                string responseContent = readStream.ReadToEnd();
+                result = JsonSerializer.Deserialize<List<SandwichModel>>(responseContent, options);
             }
             return result;
         }
@@ -63,8 +73,10 @@ namespace Bocatasion.Backoffice.Services.Food
             var response = await _httpClient.GetAsync(ControllerName + $"GetSandwichById/{id}");
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<SandwichModel>(responseContent);
+                Stream contentStream = await response.Content.ReadAsStreamAsync();
+                StreamReader readStream = new StreamReader(contentStream, Encoding.UTF8);
+                string responseContent = readStream.ReadToEnd();
+                result = JsonSerializer.Deserialize<SandwichModel>(responseContent, options);
             }
             return result;
         }
