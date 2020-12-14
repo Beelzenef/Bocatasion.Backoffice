@@ -48,6 +48,11 @@ namespace Bocatasion.Backoffice.Services.Food
             try
             {
                 var response = await _httpClient.PostAsJsonAsync(ControllerName + "CreateSandwich", model);
+                Stream contentStream = await response.Content.ReadAsStreamAsync();
+                StreamReader readStream = new StreamReader(contentStream, Encoding.UTF8);
+                string responseContent = readStream.ReadToEnd();
+                var result = JsonSerializer.Deserialize<SandwichModel>(responseContent, options);
+                return result;
             }
             catch (Exception ex)
             {

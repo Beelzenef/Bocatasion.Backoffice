@@ -1,10 +1,12 @@
 ﻿using Bocatasion.Backoffice.Models.Food;
 using Bogus;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Bocatasion.Backoffice.Testing.Fakes
 {
+    [ExcludeFromCodeCoverage]
     public static class FoodBuilder
     {
         public static SandwichModel BuildValidSandwichModel(int? id = null, string name = null)

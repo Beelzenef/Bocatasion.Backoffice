@@ -1,7 +1,9 @@
 ﻿using Bogus;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bocatasion.Backoffice.Testing.Fakes
 {
+    [ExcludeFromCodeCoverage]
     public static class GeneralBuilder
     {
         public static int BuildRandomInt()
